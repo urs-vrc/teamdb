@@ -1,0 +1,5 @@
+{
+	"json.schemaDownload.trustedDomains": {
+		"https://urs-vrc.github.io/schemas/": true
+	}
+}
