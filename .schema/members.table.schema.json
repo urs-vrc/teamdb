@@ -29,7 +29,8 @@
       "type": "string",
       "constraints": {
         "required": true,
-        "maxLength": 2
+        "minLength": 2,
+        "maxLength": 32
       }
     },
     {
