@@ -13,10 +13,10 @@
   "properties": {
     "team_handle": {
       "type": "string",
-      "description": "Team shorthand/identifier (3-4 ASCII characters).",
-      "minLength": 3,
+      "description": "Team shorthand/identifier (2-4 ASCII characters).",
+      "minLength": 2,
       "maxLength": 4,
-      "pattern": "^[\\x20-\\x7E]{3,4}$"
+      "pattern": "^[\\x20-\\x7E]{2,4}$"
     },
     "team_fqdn": {
       "type": "string",
