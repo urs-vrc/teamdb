@@ -10,7 +10,7 @@ Future<void> main(List<String> arguments) async {
     return;
   }
 
-   // arg parsing
+   // arg parsing here
 
   String? root;
   var teamsDir = 'teams';
