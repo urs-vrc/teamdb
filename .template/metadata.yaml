@@ -1,7 +1,7 @@
 # Every team gets its own metadata.yaml, which includes basic information about their team.
 # Brightling and other URS Online Services are expecting this file and format, so do NOT diverge from this format.
 
-# team handles are your team shorthands/identifiers, must be 3-4 characters, ASCII only.
+# team handles are your team shorthands/identifiers, must be 2-4 characters, ASCII only.
 team_handle: EXM1
 # the full name of your team, no character limit but we encourage to keep it within 32 characters.
 team_fqdn: Example Team
