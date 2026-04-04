@@ -12,7 +12,8 @@
     },
     "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
       "packages" : "curl, clang, cmake, ninja-build, pkg-config, libgtk-3-dev, liblzma-dev, libstdc++-12-dev, build-essential, xz-utils, zip, libglu1-mesa"
-    }
+    },
+    "ghcr.io/devcontainers/features/python:1": {}
   },
   "postStartCommand": "bash .idx/bootstrap.sh",
   "customizations": {

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       team_handle:
-        description: '5 alphanumeric characters (e.g. SRI5)'
+        description: '2-4 alphanumeric characters (e.g. SRI5)'
         required: true
       team_fqdn:
         description: 'Full team name'
@@ -13,7 +13,7 @@ on:
         description: 'Team description (optional)'
         required: false
       members_csv_lines:
-        description: 'CSV lines without header (name,discord_name,vrc_name,role)'
+        description: 'CSV lines without header (discord_name,vrc_name,runstyle,role)'
         required: true
       submission_secret:
         description: 'Secret token (do not share)'
@@ -35,21 +35,31 @@ jobs:
       - name: Verify secret & validate submission
         env:
           TEAM_SUBMISSION_SECRET: ${{ secrets.TEAM_SUBMISSION_SECRET }}
+          TEAM_HANDLE: ${{ inputs.team_handle }}
+          TEAM_FQDN: ${{ inputs.team_fqdn }}
+          TEAM_DESCRIPTION: ${{ inputs.team_description }}
+          TEAM_MEMBERS_CSV_LINES: ${{ inputs.members_csv_lines }}
+          TEAM_INPUT_SECRET: ${{ inputs.submission_secret }}
         run: |
-          .github/scripts/validate-team-input.sh \
-            "${{ inputs.team_handle }}" \
-            "${{ inputs.team_fqdn }}" \
-            "${{ inputs.team_description }}" \
-            "${{ inputs.members_csv_lines }}" \
-            "${{ inputs.submission_secret }}"
+          python3 .github/scripts/validate-workflow-input.py \
+            "$TEAM_HANDLE" \
+            "$TEAM_FQDN" \
+            "$TEAM_DESCRIPTION" \
+            "$TEAM_MEMBERS_CSV_LINES" \
+            "$TEAM_INPUT_SECRET"
 
       - name: Generate team files
+        env:
+          TEAM_HANDLE: ${{ inputs.team_handle }}
+          TEAM_FQDN: ${{ inputs.team_fqdn }}
+          TEAM_DESCRIPTION: ${{ inputs.team_description }}
+          TEAM_MEMBERS_CSV_LINES: ${{ inputs.members_csv_lines }}
         run: |
-          .github/scripts/generate-team-files.sh \
-            "${{ inputs.team_handle }}" \
-            "${{ inputs.team_fqdn }}" \
-            "${{ inputs.team_description }}" \
-            "${{ inputs.members_csv_lines }}"
+          python3 .github/scripts/create-team.py \
+            "$TEAM_HANDLE" \
+            "$TEAM_FQDN" \
+            "$TEAM_DESCRIPTION" \
+            "$TEAM_MEMBERS_CSV_LINES"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
