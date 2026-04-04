@@ -1,0 +1,70 @@
+name: Submit New Team via Discord
+
+on:
+  workflow_dispatch:
+    inputs:
+      team_handle:
+        description: '5 alphanumeric characters (e.g. SRI5)'
+        required: true
+      team_fqdn:
+        description: 'Full team name'
+        required: true
+      team_description:
+        description: 'Team description (optional)'
+        required: false
+      members_csv_lines:
+        description: 'CSV lines without header (name,discord_name,vrc_name,role)'
+        required: true
+      submission_secret:
+        description: 'Secret token (do not share)'
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  validate-and-create-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify secret & validate submission
+        env:
+          TEAM_SUBMISSION_SECRET: ${{ secrets.TEAM_SUBMISSION_SECRET }}
+        run: |
+          .github/scripts/validate-team-input.sh \
+            "${{ inputs.team_handle }}" \
+            "${{ inputs.team_fqdn }}" \
+            "${{ inputs.team_description }}" \
+            "${{ inputs.members_csv_lines }}" \
+            "${{ inputs.submission_secret }}"
+
+      - name: Generate team files
+        run: |
+          .github/scripts/generate-team-files.sh \
+            "${{ inputs.team_handle }}" \
+            "${{ inputs.team_fqdn }}" \
+            "${{ inputs.team_description }}" \
+            "${{ inputs.members_csv_lines }}"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "Add team submission: ${{ inputs.team_handle }}"
+          branch: team-${{ inputs.team_handle }}-${{ github.run_id }}
+          title: "New team → ${{ inputs.team_handle }} (${{ inputs.team_fqdn }})"
+          body: |
+            Submitted via Discord.
+
+            **Handle:** ${{ inputs.team_handle }}
+            **Full name:** ${{ inputs.team_fqdn }}
+            **Description:**  
+            ${{ inputs.team_description || 'None provided' }}
+
+            **Members preview:**
+            ${{ inputs.members_csv_lines }}
+textdelete-branch: true
