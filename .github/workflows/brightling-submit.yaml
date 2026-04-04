@@ -67,4 +67,3 @@ jobs:
 
             **Members preview:**
             ${{ inputs.members_csv_lines }}
-textdelete-branch: true
