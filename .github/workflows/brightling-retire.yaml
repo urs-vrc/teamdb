@@ -1,0 +1,71 @@
+name: Brightling Team Retire
+
+on:
+  workflow_dispatch:
+    inputs:
+      handle:
+        description: 'Team handle to retire (e.g. team-uma123)'
+        required: true
+      reason:
+        description: 'Optional reason for retirement'
+        required: false
+        default: 'Retired via Brightling bot'
+
+jobs:
+  retire-team:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create branch and retire team
+        run: |
+          TEAM_HANDLE="${{ inputs.handle }}"
+          BRANCH_NAME="retire-${TEAM_HANDLE}-$(date +%Y%m%d-%H%M%S)"
+
+          ACTIVE_PATH="teams/active/${TEAM_HANDLE}"
+          RETIRED_PATH="teams/retired/${TEAM_HANDLE}"
+
+          echo "Creating branch: ${BRANCH_NAME}"
+          git config user.name "Mejiro Bright"
+          git config user.email "276016887+brightling-ci@users.noreply.github.com"
+          git checkout -b "${BRANCH_NAME}"
+
+          echo "Retiring team: ${TEAM_HANDLE}"
+          echo "Reason: ${{ inputs.reason }}"
+
+          if [ -d "$ACTIVE_PATH" ]; then
+            mkdir -p teams/retired
+            mv "$ACTIVE_PATH" "$RETIRED_PATH"
+            echo "✅ Moved ${TEAM_HANDLE} from active/ to retired/"
+          elif [ -d "$RETIRED_PATH" ]; then
+            echo "Team is already retired. No changes made."
+            exit 0
+          else
+            echo "❌ Error: Team ${TEAM_HANDLE} not found in teams/active/"
+            exit 1
+          fi
+
+          git add teams/
+          git commit -m "Retire team ${TEAM_HANDLE}" -m " ${{ inputs.reason }}" || echo "No changes to commit"
+
+      - name: Push branch
+        run: git push origin HEAD
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: retire-${{ inputs.handle }}
+          title: "Retire team ${{ inputs.handle }}"
+          body: |
+            Updates team status for **${{ inputs.handle }}** to retired.
+
+            **Reason:** ${{ inputs.reason }}
+
+            Triggered by Brightling bot.
