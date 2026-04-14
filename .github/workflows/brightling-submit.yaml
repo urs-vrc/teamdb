@@ -61,19 +61,49 @@ jobs:
             "$TEAM_DESCRIPTION" \
             "$TEAM_MEMBERS_CSV_LINES"
 
+      - name: Create branch and commit
+        env:
+          TEAM_HANDLE: ${{ inputs.team_handle }}
+        run: |
+          TEAM_BRANCH="team-${TEAM_HANDLE}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          echo "TEAM_BRANCH=$TEAM_BRANCH" >> "$GITHUB_ENV"
+
+          git config user.name "Mejiro Bright[bot]"
+          git config user.email "276016887+brightling-ci@users.noreply.github.com"
+
+          git checkout -b "$TEAM_BRANCH"
+          git add "teams/active/$TEAM_HANDLE/members.csv" "teams/active/$TEAM_HANDLE/metadata.yaml"
+          git commit -m "Add team submission: $TEAM_HANDLE"
+          git push --set-upstream origin "$TEAM_BRANCH"
+
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: actions/github-script@v7
+        env:
+          TEAM_HANDLE: ${{ inputs.team_handle }}
+          TEAM_FQDN: ${{ inputs.team_fqdn }}
+          TEAM_DESCRIPTION: ${{ inputs.team_description }}
+          TEAM_MEMBERS_CSV_LINES: ${{ inputs.members_csv_lines }}
         with:
-          commit-message: "Add team submission: ${{ inputs.team_handle }}"
-          branch: team-${{ inputs.team_handle }}-${{ github.run_id }}
-          title: "New team → ${{ inputs.team_handle }} (${{ inputs.team_fqdn }})"
-          body: |
-            Submitted via Discord.
+          script: |
+            const body = [
+              'Submitted via Discord.',
+              '',
+              `**Handle:** ${process.env.TEAM_HANDLE}`,
+              `**Full name:** ${process.env.TEAM_FQDN}`,
+              '**Description:**',
+              process.env.TEAM_DESCRIPTION || 'None provided',
+              '',
+              '**Members preview:**',
+              process.env.TEAM_MEMBERS_CSV_LINES,
+            ].join('\n');
 
-            **Handle:** ${{ inputs.team_handle }}
-            **Full name:** ${{ inputs.team_fqdn }}
-            **Description:**  
-            ${{ inputs.team_description || 'None provided' }}
+            const response = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `New team → ${process.env.TEAM_HANDLE} (${process.env.TEAM_FQDN})`,
+              head: process.env.TEAM_BRANCH,
+              base: context.payload.repository.default_branch,
+              body,
+            });
 
-            **Members preview:**
-            ${{ inputs.members_csv_lines }}
+            core.info(`Created pull request #${response.data.number}: ${response.data.html_url}`);
