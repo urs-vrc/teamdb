@@ -31,7 +31,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.BRIGHTLING_GITHUB_TOKEN }}
 
       - name: Verify secret & validate submission
         env:
