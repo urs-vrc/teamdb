@@ -13,10 +13,9 @@
   "properties": {
     "team_handle": {
       "type": "string",
-      "description": "Team shorthand/identifier (2-4 ASCII characters).",
+      "description": "Team shorthand/identifier (2-4 characters).",
       "minLength": 2,
-      "maxLength": 4,
-      "pattern": "^[\\x20-\\x7E]{2,4}$"
+      "maxLength": 4
     },
     "team_fqdn": {
       "type": "string",

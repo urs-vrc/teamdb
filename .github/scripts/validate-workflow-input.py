@@ -4,7 +4,6 @@ import csv
 import io
 import os
 import pathlib
-import re
 import sys
 
 
@@ -27,8 +26,8 @@ def main() -> int:
         print('Error: Invalid submission secret', file=sys.stderr)
         return 1
 
-    if not re.fullmatch(r'[A-Za-z0-9]{2,4}', handle):
-        print('Error: team_handle must be 2-4 alphanumeric characters', file=sys.stderr)
+    if not 2 <= len(handle) <= 4:
+        print('Error: team_handle must be 2-4 characters', file=sys.stderr)
         return 1
 
     if not fqdn.strip():

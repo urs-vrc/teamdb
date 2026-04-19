@@ -3,7 +3,6 @@
 import csv
 import io
 import pathlib
-import re
 import sys
 
 
@@ -21,8 +20,8 @@ def main() -> int:
         print('Error: team_fqdn required', file=sys.stderr)
         return 64
 
-    if not re.fullmatch(r'[A-Za-z0-9]{2,4}', handle):
-        print('Error: team_handle must be 2-4 alphanumeric characters', file=sys.stderr)
+    if not 2 <= len(handle) <= 4:
+        print('Error: team_handle must be 2-4 characters', file=sys.stderr)
         return 1
 
     target_dir = pathlib.Path('teams') / 'active' / handle
