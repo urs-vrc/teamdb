@@ -31,6 +31,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.BRIGHTLING_GITHUB_TOKEN }}
 
       - name: Verify secret & validate submission
         env:
@@ -84,6 +85,7 @@ jobs:
           TEAM_DESCRIPTION: ${{ inputs.team_description }}
           TEAM_MEMBERS_CSV_LINES: ${{ inputs.members_csv_lines }}
         with:
+          github-token: ${{ secrets.BRIGHTLING_GITHUB_TOKEN }}
           script: |
             const body = [
               'Submitted via Discord.',

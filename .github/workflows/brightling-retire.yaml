@@ -26,6 +26,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.BRIGHTLING_GITHUB_TOKEN }}
 
       - name: Create branch and retire team
         run: |
@@ -64,6 +65,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
+          token: ${{ secrets.BRIGHTLING_GITHUB_TOKEN }}
           branch: retire-${{ inputs.handle }}
           title: "Retire team ${{ inputs.handle }}"
           body: |
