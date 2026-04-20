@@ -2,11 +2,11 @@
 # Brightling and other URS Online Services are expecting this file and format, so do NOT diverge from this format.
 
 # team handles are your team shorthands/identifiers, must be 2-4 characters, ASCII only.
-team_handle: TWFS
+team_handle: "TWFS"
 # the full name of your team, no character limit but we encourage to keep it within 32 characters.
-team_fqdn: The Twilight Festival
+team_fqdn: "The Twilight Festival"
 # URL of your team icon, must be transparent and the icon resolution must be a power-of-two resolution
 # If you want to include your own icon alongside your team database, make sure to use "./" instead (ex: ./example.png).
-team_icon_url: ./twilight.png
+team_icon_url: "./twilight.png"
 # A short blurb about your team, maximum 256 characters.
-team_blurb: The Twilight Festival are about fun and connections with all. Race like no tomorrow with everyone!
+team_blurb: "The Twilight Festival are about fun and connections with all. Race like no tomorrow with everyone!"

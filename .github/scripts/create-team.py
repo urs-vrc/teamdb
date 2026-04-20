@@ -2,8 +2,13 @@
 
 import csv
 import io
+import json
 import pathlib
 import sys
+
+
+def yaml_double_quoted(value: str) -> str:
+    return json.dumps(value, ensure_ascii=False)
 
 
 def main() -> int:
@@ -66,9 +71,9 @@ def main() -> int:
 
     metadata_path = target_dir / 'metadata.yaml'
     with metadata_path.open('w', encoding='utf-8', newline='\n') as file_handle:
-        file_handle.write(f'team_handle: {handle}\n')
-        file_handle.write(f'team_fqdn: {fqdn}\n')
-        file_handle.write('team_icon_url: ./icon.png\n')
+        file_handle.write(f'team_handle: {yaml_double_quoted(handle)}\n')
+        file_handle.write(f'team_fqdn: {yaml_double_quoted(fqdn)}\n')
+        file_handle.write(f'team_icon_url: {yaml_double_quoted("./icon.png")}\n')
         file_handle.write('team_blurb: |-\n')
         blurb_lines = desc.splitlines() or ['']
         for line in blurb_lines:

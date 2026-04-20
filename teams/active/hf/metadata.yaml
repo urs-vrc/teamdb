@@ -2,11 +2,11 @@
 # Brightling and other URS Online Services are expecting this file and format, so do NOT diverge from this format.
 
 # team handles are your team shorthands/identifiers, must be 2-4 characters, ASCII only.
-team_handle: HF
+team_handle: "HF"
 # the full name of your team, no character limit but we encourage to keep it within 32 characters.
-team_fqdn: Hokkaido Frost
+team_fqdn: "Hokkaido Frost"
 # URL of your team icon, must be transparent and the icon resolution must be a power-of-two resolution
 # If you want to include your own icon alongside your team database, make sure to use "./" instead (ex: ./example.png).
-team_icon_url: ./Hokkaido_Icon.webp
+team_icon_url: "./Hokkaido_Icon.webp"
 # A short blurb about your team, maximum 256 characters.
-team_blurb: Welcome to Hokkaido's URS division! Much like our touge division, we take fun more seriously than anything else. Meaning, Absolutely nothing is expected out of any of our runners except to go out and try your best while having fun doing so. 
+team_blurb: "Welcome to Hokkaido's URS division! Much like our touge division, we take fun more seriously than anything else. Meaning, Absolutely nothing is expected out of any of our runners except to go out and try your best while having fun doing so. "
