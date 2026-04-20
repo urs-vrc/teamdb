@@ -65,7 +65,9 @@ jobs:
         env:
           TEAM_HANDLE: ${{ inputs.team_handle }}
         run: |
-          TEAM_BRANCH="team-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          # TEAM_HANDLE might have special characters, strip them off to only the alphanumeric prefix for the branch name
+          NORMALIZED_TEAM_HANDLE=$(echo "$TEAM_HANDLE" | sed 's/[^a-zA-Z0-9]//g')
+          TEAM_BRANCH="team-${GITHUB_RUN_ID}-${NORMALIZED_TEAM_HANDLE}-${GITHUB_RUN_ATTEMPT}"
           echo "TEAM_BRANCH=$TEAM_BRANCH" >> "$GITHUB_ENV"
 
           git config user.name "Mejiro Bright[bot]"
