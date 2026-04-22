@@ -2,31 +2,45 @@
 
 import csv
 import io
-import json
 import pathlib
+import re
 import sys
+import yaml
 
 
-def yaml_double_quoted(value: str) -> str:
-    return json.dumps(value, ensure_ascii=False)
+HANDLE_PATTERN = re.compile(r'^[A-Za-z0-9]{2,4}$')
+HEX_COLOR_PATTERN = re.compile(r'^#[0-9A-Fa-f]{6}$')
+
+
+def _is_valid_hex_color(value: str) -> bool:
+    return bool(HEX_COLOR_PATTERN.fullmatch(value))
 
 
 def main() -> int:
-    if len(sys.argv) != 5:
-        print('Usage: create-team.py <team_handle> <team_fqdn> <team_description> <members_csv_lines>', file=sys.stderr)
+    if len(sys.argv) != 6:
+        print('Usage: create-team.py <team_handle> <team_fqdn> <team_color> <team_description> <members_csv_lines>', file=sys.stderr)
         return 64
 
-    handle, fqdn, desc, csv_lines = sys.argv[1:5]
+    handle, fqdn, color, desc, csv_lines = sys.argv[1:6]
 
     if not handle:
         print('Error: team_handle required', file=sys.stderr)
         return 64
-    if not fqdn:
+    if not fqdn.strip():
         print('Error: team_fqdn required', file=sys.stderr)
         return 64
+    if not _is_valid_hex_color(color):
+        print('Error: team_color must be a hex code like #9E9E9E', file=sys.stderr)
+        return 64
+    if len(fqdn) > 64:
+        print('Error: team_fqdn must be 64 characters or fewer', file=sys.stderr)
+        return 64
+    if len(desc) > 256:
+        print('Error: team_description must be 256 characters or fewer', file=sys.stderr)
+        return 64
 
-    if not 2 <= len(handle) <= 4:
-        print('Error: team_handle must be 2-4 characters', file=sys.stderr)
+    if not HANDLE_PATTERN.fullmatch(handle):
+        print('Error: team_handle must be 2-4 alphanumeric characters', file=sys.stderr)
         return 1
 
     target_dir = pathlib.Path('teams') / 'active' / handle
@@ -38,6 +52,7 @@ def main() -> int:
     target_dir.mkdir(parents=True, exist_ok=False)
 
     rows = []
+    seen_discord_names = set()
     reader = csv.reader(io.StringIO(csv_lines))
     for line_number, row in enumerate(reader, start=1):
         if not row or all(not cell.strip() for cell in row):
@@ -49,6 +64,15 @@ def main() -> int:
         if not discord_name or not vrc_name or not runstyle or not role:
             print(f'Error: CSV row {line_number} contains an empty field', file=sys.stderr)
             return 1
+        if len(discord_name) > 64:
+            print(f'Error: CSV row {line_number} discord_name must be 64 characters or fewer', file=sys.stderr)
+            return 1
+        if len(vrc_name) > 64:
+            print(f'Error: CSV row {line_number} vrc_name must be 64 characters or fewer', file=sys.stderr)
+            return 1
+        if len(runstyle) > 32:
+            print(f'Error: CSV row {line_number} runstyle must be 32 characters or fewer', file=sys.stderr)
+            return 1
         try:
             role_value = int(role)
         except ValueError:
@@ -57,6 +81,12 @@ def main() -> int:
         if role_value < 0:
             print(f'Error: CSV row {line_number} role must be >= 0', file=sys.stderr)
             return 1
+
+        if discord_name in seen_discord_names:
+            print(f'Error: CSV row {line_number} duplicate discord_name "{discord_name}"', file=sys.stderr)
+            return 1
+        seen_discord_names.add(discord_name)
+
         rows.append([discord_name, vrc_name, runstyle, str(role_value)])
 
     if not rows:
@@ -70,14 +100,15 @@ def main() -> int:
         writer.writerows(rows)
 
     metadata_path = target_dir / 'metadata.yaml'
+    metadata = {
+        'team_handle': handle,
+        'team_fqdn': fqdn,
+        'team_icon_url': './icon.png',
+        'team_blurb': desc,
+        'team_color': color,
+    }
     with metadata_path.open('w', encoding='utf-8', newline='\n') as file_handle:
-        file_handle.write(f'team_handle: {yaml_double_quoted(handle)}\n')
-        file_handle.write(f'team_fqdn: {yaml_double_quoted(fqdn)}\n')
-        file_handle.write(f'team_icon_url: {yaml_double_quoted("./icon.png")}\n')
-        file_handle.write('team_blurb: |-\n')
-        blurb_lines = desc.splitlines() or ['']
-        for line in blurb_lines:
-            file_handle.write(f'  {line}\n')
+        yaml.safe_dump(metadata, file_handle, sort_keys=False, allow_unicode=True)
 
     print(f'Files generated successfully in {target_dir}')
     print('members.csv')

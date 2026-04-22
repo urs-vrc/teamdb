@@ -12,6 +12,9 @@ on:
       team_description:
         description: 'Team description (optional)'
         required: false
+      team_color:
+        description: 'Team color hex code (e.g. #9E9E9E)'
+        required: true
       members_csv_lines:
         description: 'CSV lines without header (discord_name,vrc_name,runstyle,role)'
         required: true
@@ -32,11 +35,16 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install Python dependencies
+        run: |
+          python3 -m pip install --disable-pip-version-check -r .github/scripts/requirements.txt
+
       - name: Verify secret & validate submission
         env:
           TEAM_SUBMISSION_SECRET: ${{ secrets.TEAM_SUBMISSION_SECRET }}
           TEAM_HANDLE: ${{ inputs.team_handle }}
           TEAM_FQDN: ${{ inputs.team_fqdn }}
+          TEAM_COLOR: ${{ inputs.team_color }}
           TEAM_DESCRIPTION: ${{ inputs.team_description }}
           TEAM_MEMBERS_CSV_LINES: ${{ inputs.members_csv_lines }}
           TEAM_INPUT_SECRET: ${{ inputs.submission_secret }}
@@ -44,6 +52,7 @@ jobs:
           python3 .github/scripts/validate-workflow-input.py \
             "$TEAM_HANDLE" \
             "$TEAM_FQDN" \
+            "$TEAM_COLOR" \
             "$TEAM_DESCRIPTION" \
             "$TEAM_MEMBERS_CSV_LINES" \
             "$TEAM_INPUT_SECRET"
@@ -52,12 +61,14 @@ jobs:
         env:
           TEAM_HANDLE: ${{ inputs.team_handle }}
           TEAM_FQDN: ${{ inputs.team_fqdn }}
+          TEAM_COLOR: ${{ inputs.team_color }}
           TEAM_DESCRIPTION: ${{ inputs.team_description }}
           TEAM_MEMBERS_CSV_LINES: ${{ inputs.members_csv_lines }}
         run: |
           python3 .github/scripts/create-team.py \
             "$TEAM_HANDLE" \
             "$TEAM_FQDN" \
+            "$TEAM_COLOR" \
             "$TEAM_DESCRIPTION" \
             "$TEAM_MEMBERS_CSV_LINES"
 
@@ -83,6 +94,7 @@ jobs:
         env:
           TEAM_HANDLE: ${{ inputs.team_handle }}
           TEAM_FQDN: ${{ inputs.team_fqdn }}
+          TEAM_COLOR: ${{ inputs.team_color }}
           TEAM_DESCRIPTION: ${{ inputs.team_description }}
           TEAM_MEMBERS_CSV_LINES: ${{ inputs.members_csv_lines }}
         with:
@@ -93,6 +105,7 @@ jobs:
               '',
               `**Handle:** ${process.env.TEAM_HANDLE}`,
               `**Full name:** ${process.env.TEAM_FQDN}`,
+              `**Color:** ${process.env.TEAM_COLOR}`,
               '**Description:**',
               process.env.TEAM_DESCRIPTION || 'None provided',
               '',

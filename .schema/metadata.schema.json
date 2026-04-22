@@ -8,7 +8,8 @@
     "team_handle",
     "team_fqdn",
     "team_icon_url",
-    "team_blurb"
+    "team_blurb",
+    "team_color"
   ],
   "properties": {
     "team_handle": {
@@ -33,6 +34,11 @@
       "description": "Short team description.",
       "minLength": 1,
       "maxLength": 256
+    },
+    "team_color": {
+      "type": "string",
+      "description": "Hex color used for the team.",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
     }
   }
 }

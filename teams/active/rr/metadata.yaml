@@ -10,3 +10,5 @@ team_fqdn: "ROADRUNNERS"
 team_icon_url: "./icon.webp"
 # A short blurb about your team, maximum 256 characters.
 team_blurb: "Once the underdogs from the underground now let loose in the daylight."
+# The color of your team, in hex format. This is used for your team icon background and other places where your team color is needed.
+team_color: "#9E9E9E"

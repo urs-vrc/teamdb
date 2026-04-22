@@ -10,3 +10,5 @@ team_fqdn: "Kobayauma"
 team_icon_url: "./icon.webp"
 # A short blurb about your team, maximum 256 characters.
 team_blurb: "Founded by Kobayauma Tohira in 1237, during the height of the Kamakura Shogunate, Kobayauma emerged as a powerful leader, and as a symbol of foresight, agility, and perseverance that would shape the destiny of Japanese history for centuries."
+# The color of your team, in hex format. This is used for your team icon background and other places where your team color is needed.
+team_color: "#f5c227"

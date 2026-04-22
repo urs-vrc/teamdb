@@ -10,3 +10,5 @@ team_fqdn: "Greycoats"
 team_icon_url: "https://example.com/favicon.png"
 # A short blurb about your team, maximum 256 characters.
 team_blurb: "URS-reserved namespace for legacy URA staff. Edits are to be approved by URS Lead Staff ONLY."
+# The color of your team, in hex format. This is used for your team icon background and other places where your team color is needed.
+team_color: "#9E9E9E"

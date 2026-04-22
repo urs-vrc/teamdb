@@ -10,3 +10,5 @@ team_fqdn: "Seirios"
 team_icon_url: "./icon.png"
 # A short blurb about your team, maximum 256 characters.
 team_blurb: "Named after Sirius, the brightest star in the night sky,  our team embodies brilliance, endurance, and the pursuit of perfection. Just as Seirios lights the heavens, we aim to light the track with unwavering determination and unity."
+# The color of your team, in hex format. This is used for your team icon background and other places where your team color is needed.
+team_color: "#1f82bb"

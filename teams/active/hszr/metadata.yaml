@@ -10,3 +10,5 @@ team_fqdn: "Hoshizora"
 team_icon_url: "./icon.png"
 # A short blurb about your team, maximum 256 characters.
 team_blurb: "＂We will shine with hope and wishes like the starry skies․＂ Hoshizora is the primary racing team while the URH is the primary retirement home Group Banner ＆ Icon by˸ 「 Ray 」"
+# The color of your team, in hex format. This is used for your team icon background and other places where your team color is needed.
+team_color: "#b19dc8"

@@ -10,3 +10,5 @@ team_fqdn: "Celestials"
 team_icon_url: "./CLST.png"
 # A short blurb about your team, maximum 256 characters.
 team_blurb: "We are Celestials, born among the stars and forged into UMAs. We are meant to outrun and outshine everyone who stands in our way."
+# The color of your team, in hex format. This is used for your team icon background and other places where your team color is needed.
+team_color: "#daa520"

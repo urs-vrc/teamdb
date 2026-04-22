@@ -17,6 +17,7 @@ team_handle: ABC
 team_fqdn: Alpha Bravo Club
 team_icon_url: https://example.com/icon.png
 team_blurb: Valid team blurb
+team_color: "#9E9E9E"
 ''');
       await _writeFile(p.join(root.path, 'teams', 'ABC', 'members.csv'), '''
 discord_name,vrc_name,runstyle,role
@@ -48,7 +49,7 @@ team_icon_url: https://example.com/icon.png
       final report = await validateRepository(repoRoot: root.path);
       expect(report.isValid, isFalse);
       expect(
-        report.errors.any((e) => e.toString().contains('team_blurb')),
+        report.errors.any((e) => e.toString().contains('team_color')),
         isTrue,
       );
     });
@@ -63,6 +64,7 @@ team_handle: ABC
 team_fqdn: Alpha Bravo Club
 team_icon_url: ./icon.png
 team_blurb: Valid team blurb
+team_color: "#9E9E9E"
 ''');
       await _writeFile(p.join(root.path, 'teams', 'ABC', 'members.csv'), '''
 discord_name,vrc_name,runstyle,role
@@ -137,7 +139,13 @@ Future<void> _writeSchemas(String root) async {
       r'$schema': 'https://json-schema.org/draft/2020-12/schema',
       'type': 'object',
       'additionalProperties': false,
-      'required': ['team_handle', 'team_fqdn', 'team_icon_url', 'team_blurb'],
+      'required': [
+        'team_handle',
+        'team_fqdn',
+        'team_icon_url',
+        'team_blurb',
+        'team_color',
+      ],
       'properties': {
         'team_handle': {'type': 'string', 'minLength': 3, 'maxLength': 4},
         'team_fqdn': {'type': 'string', 'minLength': 1, 'maxLength': 64},
@@ -146,6 +154,7 @@ Future<void> _writeSchemas(String root) async {
           'pattern': r'^(https:\/\/.+|\./.+)$',
         },
         'team_blurb': {'type': 'string', 'minLength': 1, 'maxLength': 256},
+        'team_color': {'type': 'string', 'pattern': r'^#[0-9A-Fa-f]{6}$'},
       },
     }),
   );

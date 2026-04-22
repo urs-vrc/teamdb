@@ -10,3 +10,4 @@ team_fqdn: "BackFire"
 team_icon_url: "./logo.png"
 # A short blurb about your team, maximum 256 characters.
 team_blurb: "We are a competitive VRC touge racing team that has somehow stumbled into opening an uma team. We welcome anyone interested in learning touge racing or just wanting to become friends!"
+team_color: "#57090a"

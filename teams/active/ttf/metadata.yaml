@@ -10,3 +10,5 @@ team_fqdn: "The Twilight Festival"
 team_icon_url: "./twilight.png"
 # A short blurb about your team, maximum 256 characters.
 team_blurb: "The Twilight Festival are about fun and connections with all. Race like no tomorrow with everyone!"
+# The color of your team, in hex format. This is used for your team icon background and other places where your team color is needed.
+team_color: "#6e5d99"

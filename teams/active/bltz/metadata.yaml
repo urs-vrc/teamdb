@@ -10,3 +10,5 @@ team_fqdn: "Blitzcourse"
 team_icon_url: "./bltz.png"
 # A short blurb about your team, maximum 256 characters.
 team_blurb: "Born as the very first team in the URA, we’re still charging forward into the URS stronger, faster, and more determined than ever."
+# The color of your team, in hex format. This is used for your team icon background and other places where your team color is needed.
+team_color: "#c73673"

@@ -10,3 +10,5 @@ team_fqdn: "Hokkaido Frost"
 team_icon_url: "./Hokkaido_Icon.webp"
 # A short blurb about your team, maximum 256 characters.
 team_blurb: "Welcome to Hokkaido's URS division! Much like our touge division, we take fun more seriously than anything else. Meaning, Absolutely nothing is expected out of any of our runners except to go out and try your best while having fun doing so. "
+# The color of your team, in hex format. This is used for your team icon background and other places where your team color is needed.
+team_color: "#7df9ff"

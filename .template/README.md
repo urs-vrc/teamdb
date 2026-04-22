@@ -21,6 +21,8 @@ team_fqdn: Example Team
 team_icon_url: https://example.com/favicon.png
 # A short blurb about your team, maximum 256 characters.
 team_blurb: This is an example team manifest that bots and the URS Online Services will read for your team description.
+# The color of your team, in hex format. This is used for your team icon background and other places where your team color is needed.
+team_color: "#9E9E9E"
 ```
 
 ### `members.csv`
