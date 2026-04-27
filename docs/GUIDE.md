@@ -6,7 +6,7 @@ Welcome to the URS Team Database! The easiest way to register your team is throu
 
 ## Accessing the Form
 
-To start the registration process, use the designated command in our Discord server. This will open the "Submit New Team to TeamDB" modal shown above.
+To start the registration process, use the `/teamdb submit` command in our Discord server. This will open the "Submit New Team to TeamDB" modal shown above.
 
 ## Form Fields
 
