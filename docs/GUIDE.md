@@ -1,6 +1,6 @@
 # Brightling Team Registration Guide
 
-Welcome to the URS Team Database! The easiest way to register your team is through our Discord bot, **Brightling**. This guide will walk you through the process of using the submission form.
+Welcome to the URS Team Database! The easiest way to register your team is through our Discord bot, **Brightling**, using the `/teamdb submit` command. This guide will walk you through the process of using the submission form.
 
 ![Brightling Submission Form](brightling_form.png)
 
@@ -29,25 +29,38 @@ To start the registration process, use the `/teamdb submit` command in our Disco
 ### 5. Members CSV (one per line)
 *   **Description:** A list of your team members and their details.
 *   **Format:** `discord_name,vrc_name,runstyle,role`
-*   **Important:** Do NOT include the header row in the bot's text area.
+*   **Important:** Do **NOT** include the header row in the bot's text area. Just enter the member data, one person per line.
 
-#### Field Details for CSV:
-*   **discord_name:** The member's Discord username (lowercase).
-*   **vrc_name:** The member's VRChat username.
-*   **runstyle:** Use the following shorthands:
-    *   `FR`: Front-running
-    *   `PC`: Pace-chasing
-    *   `LS`: Late-surging
-    *   `EC`: End-closing
-    *   *Note: For multiple styles, separate with a plus (e.g., `EC+LS`).*
-*   **role:** Use the corresponding ID:
-    *   `0`: Captain
-    *   `1`: Co-Captain
-    *   `2`: Trainer
-    *   `3`: Regular Member
-    *   `4`: Temporary Member
+#### How to format each line:
 
-**Example Entry:**
+Each line should contain four pieces of information, separated by commas:
+
+| Column | What to enter | Requirements |
+| :--- | :--- | :--- |
+| **Discord Username** | Your member's Discord name. | Must be **lowercase** and 64 characters or less. |
+| **VRChat Name** | The member's VRChat username. | Maximum 64 characters. |
+| **Running Style** | Shorthand for their preferred style. | Use **FR**, **PC**, **LS**, or **EC** (see below). |
+| **Role ID** | A number representing their role. | Use **0** through **4** (see below). |
+
+#### 🏃 Running Style Shorthands:
+If a member has multiple styles, separate them with a `+` (e.g., `EC+LS`).
+*   `FR`: Front-running
+*   `PC`: Pace-chasing
+*   `LS`: Late-surging
+*   `EC`: End-closing
+
+#### 🎭 Role IDs:
+*   `0`: **Captain**
+*   `1`: **Co-Captain**
+*   `2`: **Trainer**
+*   `3`: **Regular Member**
+*   `4`: **Temporary Member**
+
+---
+
+### Example CSV Entry:
+If you were entering a Captain named "sr229" and a Co-Captain named "alyca", you would type this into the box:
+
 ```csv
 sr229,Minori みのり,EC+LS,0
 alyca,Alyca,EC+LS,1
