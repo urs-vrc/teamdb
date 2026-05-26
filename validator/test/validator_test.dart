@@ -32,7 +32,55 @@ user2,Runner Two,PC,3
         reason: report.errors.map((e) => e.toString()).join('\n'),
       );
       expect(report.filesChecked, 2);
-      expect(report.errors, isEmpty);
+    });
+
+    test('passes with an empty team_blurb description', () async {
+      final root = await _createTempRepo();
+      addTearDown(() => root.delete(recursive: true));
+
+      await _writeSchemas(root.path);
+      await _writeFile(p.join(root.path, 'teams', 'ABC', 'metadata.yaml'), '''
+team_handle: ABC
+team_fqdn: Alpha Bravo Club
+team_icon_url: https://example.com/icon.png
+team_blurb: ""
+team_color: "#9E9E9E"
+''');
+      await _writeFile(p.join(root.path, 'teams', 'ABC', 'members.csv'), '''
+discord_name,vrc_name,runstyle,role
+user1,Runner One,EC+LS,0
+''');
+
+      final report = await validateRepository(repoRoot: root.path);
+      expect(
+        report.isValid,
+        isTrue,
+        reason: report.errors.map((e) => e.toString()).join('\n'),
+      );
+    });
+
+    test('passes when team_blurb is omitted', () async {
+      final root = await _createTempRepo();
+      addTearDown(() => root.delete(recursive: true));
+
+      await _writeSchemas(root.path);
+      await _writeFile(p.join(root.path, 'teams', 'ABC', 'metadata.yaml'), '''
+team_handle: ABC
+team_fqdn: Alpha Bravo Club
+team_icon_url: https://example.com/icon.png
+team_color: "#9E9E9E"
+''');
+      await _writeFile(p.join(root.path, 'teams', 'ABC', 'members.csv'), '''
+discord_name,vrc_name,runstyle,role
+user1,Runner One,EC+LS,0
+''');
+
+      final report = await validateRepository(repoRoot: root.path);
+      expect(
+        report.isValid,
+        isTrue,
+        reason: report.errors.map((e) => e.toString()).join('\n'),
+      );
     });
 
     test('fails when required metadata field is missing', () async {
@@ -143,7 +191,6 @@ Future<void> _writeSchemas(String root) async {
         'team_handle',
         'team_fqdn',
         'team_icon_url',
-        'team_blurb',
         'team_color',
       ],
       'properties': {
@@ -153,7 +200,7 @@ Future<void> _writeSchemas(String root) async {
           'type': 'string',
           'pattern': r'^(https:\/\/.+|\./.+)$',
         },
-        'team_blurb': {'type': 'string', 'minLength': 1, 'maxLength': 256},
+        'team_blurb': {'type': 'string', 'minLength': 0, 'maxLength': 256},
         'team_color': {'type': 'string', 'pattern': r'^#[0-9A-Fa-f]{6}$'},
       },
     }),
