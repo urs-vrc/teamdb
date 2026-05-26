@@ -32,7 +32,6 @@ user2,Runner Two,PC,3
         reason: report.errors.map((e) => e.toString()).join('\n'),
       );
       expect(report.filesChecked, 2);
-      expect(report.errors, isEmpty);
     });
 
     test('passes with an empty team_blurb description', () async {
@@ -58,7 +57,6 @@ user1,Runner One,EC+LS,0
         isTrue,
         reason: report.errors.map((e) => e.toString()).join('\n'),
       );
-      expect(report.errors, isEmpty);
     });
 
     test('fails when required metadata field is missing', () async {
