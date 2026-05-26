@@ -32,7 +32,7 @@
     "team_blurb": {
       "type": "string",
       "description": "Short team description.",
-      "minLength": 1,
+      "minLength": 0,
       "maxLength": 256
     },
     "team_color": {
