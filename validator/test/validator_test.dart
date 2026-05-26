@@ -59,6 +59,30 @@ user1,Runner One,EC+LS,0
       );
     });
 
+    test('passes when team_blurb is omitted', () async {
+      final root = await _createTempRepo();
+      addTearDown(() => root.delete(recursive: true));
+
+      await _writeSchemas(root.path);
+      await _writeFile(p.join(root.path, 'teams', 'ABC', 'metadata.yaml'), '''
+team_handle: ABC
+team_fqdn: Alpha Bravo Club
+team_icon_url: https://example.com/icon.png
+team_color: "#9E9E9E"
+''');
+      await _writeFile(p.join(root.path, 'teams', 'ABC', 'members.csv'), '''
+discord_name,vrc_name,runstyle,role
+user1,Runner One,EC+LS,0
+''');
+
+      final report = await validateRepository(repoRoot: root.path);
+      expect(
+        report.isValid,
+        isTrue,
+        reason: report.errors.map((e) => e.toString()).join('\n'),
+      );
+    });
+
     test('fails when required metadata field is missing', () async {
       final root = await _createTempRepo();
       addTearDown(() => root.delete(recursive: true));
@@ -167,7 +191,6 @@ Future<void> _writeSchemas(String root) async {
         'team_handle',
         'team_fqdn',
         'team_icon_url',
-        'team_blurb',
         'team_color',
       ],
       'properties': {
